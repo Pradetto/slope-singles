@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slope Singles - Find Your Riding Partner at Mammoth</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'slope-blue': '#1E40AF',
+            'slope-snow': '#F8FAFC',
+            'slope-ice': '#E0F2FE',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gradient-to-b from-slope-ice to-slope-snow min-h-screen">
+  <!-- Header -->
+  <header class="bg-white shadow-sm">
+    <div class="max-w-md mx-auto px-4 py-4 flex items-center justify-between">
+      <h1 class="text-2xl font-bold text-slope-blue">⛷️ Slope Singles</h1>
+      <button id="profileBtn" class="text-sm text-gray-600 hidden">Profile</button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-md mx-auto px-4 py-8">
+    <!-- Landing View -->
+    <div id="landingView" class="text-center space-y-8">
+      <div class="space-y-4">
+        <h2 class="text-4xl font-bold text-gray-900">
+          Find Your<br />Riding Partner
+        </h2>
+        <p class="text-lg text-gray-600">
+          Connect with singles and make friends at Mammoth Mountain
+        </p>
+      </div>
+
+      <div class="bg-white rounded-2xl p-8 shadow-lg space-y-6">
+        <div class="space-y-3">
+          <div class="flex items-center gap-3">
+            <span class="text-2xl">🏂</span>
+            <p class="text-left text-gray-700">Meet people on the mountain, right now</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-2xl">💬</span>
+            <p class="text-left text-gray-700">Chat and coordinate runs together</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-2xl">❤️</span>
+            <p class="text-left text-gray-700">Make friends or find romance on the slopes</p>
+          </div>
+        </div>
+
+        <div class="space-y-3 pt-4">
+          <button 
+            onclick="showView('signup')"
+            class="w-full bg-slope-blue text-white py-4 rounded-xl font-semibold text-lg hover:bg-blue-700 transition"
+          >
+            Get Started
+          </button>
+          <p class="text-sm text-gray-500">
+            Currently available at Mammoth Mountain only
+          </p>
+        </div>
+      </div>
+
+      <div class="text-xs text-gray-500 space-y-1">
+        <p>MVP - Built to test the concept</p>
+        <p>Feedback? Bugs? Let us know!</p>
+      </div>
+    </div>
+
+    <!-- Signup View -->
+    <div id="signupView" class="hidden">
+      <div class="bg-white rounded-2xl p-8 shadow-lg space-y-6">
+        <h2 class="text-2xl font-bold text-gray-900">Create Your Profile</h2>
+        
+        <form id="signupForm" class="space-y-4">
+          <!-- Name -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Name</label>
+            <input 
+              type="text" 
+              id="name" 
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slope-blue focus:border-transparent"
+              placeholder="Your name"
+            >
+          </div>
+
+          <!-- Age -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Age</label>
+            <input 
+              type="number" 
+              id="age" 
+              required
+              min="18"
+              max="100"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slope-blue focus:border-transparent"
+              placeholder="18+"
+            >
+          </div>
+
+          <!-- Skill Level -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Skill Level</label>
+            <select 
+              id="skillLevel" 
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slope-blue focus:border-transparent"
+            >
+              <option value="">Select...</option>
+              <option value="beginner">Beginner - Still learning</option>
+              <option value="intermediate">Intermediate - Confident on blues</option>
+              <option value="advanced">Advanced - Love blacks & terrain parks</option>
+              <option value="expert">Expert - Backcountry & double blacks</option>
+            </select>
+          </div>
+
+          <!-- Looking For -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Looking For</label>
+            <select 
+              id="lookingFor" 
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slope-blue focus:border-transparent"
+            >
+              <option value="">Select...</option>
+              <option value="friends">Friends - Riding buddies</option>
+              <option value="dating">Dating - Romance on the slopes</option>
+              <option value="both">Both - Open to anything</option>
+            </select>
+          </div>
+
+          <!-- Bio -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">About You (optional)</label>
+            <textarea 
+              id="bio" 
+              maxlength="200"
+              rows="3"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slope-blue focus:border-transparent"
+              placeholder="Tell people a bit about yourself... (200 chars max)"
+            ></textarea>
+            <p class="text-xs text-gray-500 mt-1" id="charCount">0 / 200</p>
+          </div>
+
+          <!-- Submit -->
+          <button 
+            type="submit"
+            class="w-full bg-slope-blue text-white py-4 rounded-xl font-semibold text-lg hover:bg-blue-700 transition"
+          >
+            Continue →
+          </button>
+        </form>
+
+        <button 
+          onclick="showView('landing')"
+          class="w-full text-gray-600 text-sm hover:text-gray-900"
+        >
+          ← Back
+        </button>
+      </div>
+    </div>
+
+    <!-- Browse View (placeholder) -->
+    <div id="browseView" class="hidden">
+      <div class="bg-white rounded-2xl p-8 shadow-lg text-center space-y-4">
+        <h2 class="text-2xl font-bold text-gray-900">Who's On The Mountain</h2>
+        <p class="text-gray-600">Coming soon! This is where you'll see other riders.</p>
+        <button 
+          onclick="showView('landing')"
+          class="w-full text-gray-600 text-sm hover:text-gray-900"
+        >
+          ← Back
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <script src="src/app.js"></script>
+</body>
+</html>
