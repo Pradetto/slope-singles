@@ -25,7 +25,10 @@
     }
   </script>
   <style>
-    body { font-family: 'Inter', sans-serif; }
+    body { 
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
     .gradient-text {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       -webkit-background-clip: text;
@@ -43,6 +46,7 @@
     .swipe-card {
       touch-action: pan-y;
       user-select: none;
+      transition: transform 0.1s ease-out;
     }
     @keyframes slideUp {
       from { transform: translateY(20px); opacity: 0; }
@@ -51,62 +55,101 @@
     .slide-up {
       animation: slideUp 0.5s ease-out;
     }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    .pulse-animation {
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+    .float {
+      animation: float 3s ease-in-out infinite;
+    }
+    .like-overlay, .pass-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      font-size: 80px;
+      font-weight: 900;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.2s ease-out;
+      text-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+    .show-like, .show-pass {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
   </style>
 </head>
 <body class="bg-slate-900 min-h-screen">
   <!-- Header -->
-  <header class="bg-slate-800/50 backdrop-blur-lg border-b border-slate-700/50 sticky top-0 z-50">
+  <header class="bg-slate-800/80 backdrop-blur-xl border-b border-slate-700/50 sticky top-0 z-50">
     <div class="max-w-md mx-auto px-6 py-4 flex items-center justify-between">
       <h1 class="text-xl font-bold text-white flex items-center gap-2">
-        <span class="text-2xl">🏂</span>
+        <span class="text-2xl float">🏂</span>
         <span class="gradient-text">Slope Singles</span>
       </h1>
-      <button id="profileBtn" class="text-sm text-slate-400 hover:text-white transition hidden">Profile</button>
+      <div id="statsBar" class="hidden flex items-center gap-4">
+        <div class="text-center">
+          <div class="text-xs text-slate-400">Matches</div>
+          <div id="matchCount" class="text-white font-bold">0</div>
+        </div>
+        <div class="text-center">
+          <div class="text-xs text-slate-400">Streak</div>
+          <div id="streakCount" class="text-white font-bold">0🔥</div>
+        </div>
+      </div>
     </div>
   </header>
 
   <!-- Main Container -->
   <main class="max-w-md mx-auto px-6 py-12">
     <!-- Landing View -->
-    <div id="landingView" class="space-y-10">
+    <div id="landingView" class="space-y-10 slide-up">
       <!-- Animated Hero Section -->
-      <div class="relative bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl overflow-hidden border border-slate-700/50 shadow-2xl" style="height: 300px;">
+      <div class="relative bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl overflow-hidden border border-slate-700/30 shadow-2xl" style="height: 320px;">
         <canvas id="heroCanvas"></canvas>
         <div class="relative z-10 text-center p-8 flex flex-col justify-center h-full">
-          <h2 class="text-5xl font-black text-white leading-tight drop-shadow-lg">
+          <h2 class="text-5xl font-black text-white leading-tight drop-shadow-2xl mb-2">
             Find Your<br />
-            <span class="gradient-text">Riding Partner</span>
+            <span class="gradient-text text-6xl">Riding Partner</span>
           </h2>
-          <p class="text-xl text-slate-200 mt-4 drop-shadow-md">
-            Meet singles at Mammoth Mountain
+          <p class="text-xl text-slate-200 mt-4 drop-shadow-xl font-medium">
+            Connect at Mammoth Mountain 🏔️
           </p>
         </div>
       </div>
 
       <!-- Feature Cards -->
-      <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-8 shadow-2xl border border-slate-700/50 space-y-6">
+      <div class="bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-slate-700/30 space-y-6">
         <div class="space-y-5">
-          <div class="flex items-start gap-4 group">
-            <div class="text-3xl mt-1 group-hover:scale-110 transition-transform">🏔️</div>
+          <div class="flex items-start gap-4 p-4 bg-slate-700/20 rounded-2xl hover:bg-slate-700/30 transition-all duration-300 group cursor-pointer">
+            <div class="text-4xl mt-1 group-hover:scale-125 transition-transform duration-300">🏔️</div>
             <div>
-              <h3 class="text-white font-semibold text-lg mb-1">On The Mountain, Right Now</h3>
-              <p class="text-slate-400">See who's riding today in real-time</p>
+              <h3 class="text-white font-bold text-lg mb-1">Live Mountain Status</h3>
+              <p class="text-slate-400">See who's shredding right now</p>
             </div>
           </div>
           
-          <div class="flex items-start gap-4 group">
-            <div class="text-3xl mt-1 group-hover:scale-110 transition-transform">⚡</div>
+          <div class="flex items-start gap-4 p-4 bg-slate-700/20 rounded-2xl hover:bg-slate-700/30 transition-all duration-300 group cursor-pointer">
+            <div class="text-4xl mt-1 group-hover:scale-125 transition-transform duration-300">⚡</div>
             <div>
-              <h3 class="text-white font-semibold text-lg mb-1">Instant Vibes</h3>
-              <p class="text-slate-400">Shared passion, zero awkward small talk</p>
+              <h3 class="text-white font-bold text-lg mb-1">Instant Chemistry</h3>
+              <p class="text-slate-400">Shared passion, real connections</p>
             </div>
           </div>
           
-          <div class="flex items-start gap-4 group">
-            <div class="text-3xl mt-1 group-hover:scale-110 transition-transform">💕</div>
+          <div class="flex items-start gap-4 p-4 bg-slate-700/20 rounded-2xl hover:bg-slate-700/30 transition-all duration-300 group cursor-pointer">
+            <div class="text-4xl mt-1 group-hover:scale-125 transition-transform duration-300">💕</div>
             <div>
-              <h3 class="text-white font-semibold text-lg mb-1">Friends or Romance</h3>
-              <p class="text-slate-400">Find riding buddies or someone special</p>
+              <h3 class="text-white font-bold text-lg mb-1">More Than Just Rides</h3>
+              <p class="text-slate-400">Find friends, romance, or both</p>
             </div>
           </div>
         </div>
@@ -115,22 +158,27 @@
         <div class="pt-4">
           <button 
             onclick="showView('signup')"
-            class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-4 rounded-2xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200"
+            class="w-full bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 text-white py-5 rounded-2xl font-black text-xl shadow-2xl hover:shadow-pink-500/25 transform hover:scale-[1.02] transition-all duration-300 pulse-animation"
           >
-            Get Started 🚀
+            Start Matching 🚀
           </button>
-          <p class="text-sm text-slate-500 text-center mt-4">
-            <span class="inline-block px-3 py-1 bg-slate-700/50 rounded-full">
-              📍 Currently at Mammoth Mountain
-            </span>
-          </p>
+          <div class="text-center mt-4 space-y-2">
+            <p class="text-sm text-slate-500">
+              <span class="inline-block px-4 py-2 bg-slate-700/50 rounded-full font-semibold">
+                📍 Mammoth Mountain Only
+              </span>
+            </p>
+            <p class="text-xs text-slate-600">
+              32 riders online now • 12 new today
+            </p>
+          </div>
         </div>
       </div>
 
-      <!-- Footer Badge -->
+      <!-- Footer -->
       <div class="text-center space-y-2">
-        <p class="text-xs text-slate-500">MVP - Built to test the concept</p>
-        <button onclick="showView('browse')" class="text-xs text-blue-400 hover:text-blue-300">
+        <p class="text-xs text-slate-500">MVP • Built for real riders</p>
+        <button onclick="showView('browse')" class="text-sm text-blue-400 hover:text-blue-300 font-semibold">
           Preview Browse →
         </button>
       </div>
@@ -138,100 +186,95 @@
 
     <!-- Signup View -->
     <div id="signupView" class="hidden slide-up">
-      <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-8 shadow-2xl border border-slate-700/50 space-y-6">
+      <div class="bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-slate-700/30 space-y-6">
         <div class="text-center mb-6">
-          <h2 class="text-3xl font-bold text-white mb-2">Create Your Profile</h2>
-          <p class="text-slate-400">Let's get you shredding with others</p>
+          <div class="text-6xl mb-4">🏂</div>
+          <h2 class="text-4xl font-black text-white mb-2 gradient-text">Join the Mountain</h2>
+          <p class="text-slate-400 text-lg">Let's get you set up</p>
         </div>
         
         <form id="signupForm" class="space-y-5">
-          <!-- Name -->
           <div>
-            <label class="block text-sm font-semibold text-slate-300 mb-2">Name</label>
+            <label class="block text-sm font-bold text-slate-300 mb-2">Name</label>
             <input 
               type="text" 
               id="name" 
               required
-              class="w-full px-4 py-3.5 bg-slate-700/50 border border-slate-600 text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-slate-500 transition"
+              class="w-full px-5 py-4 bg-slate-700/50 border-2 border-slate-600 text-white rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 placeholder-slate-500 transition font-medium"
               placeholder="Your name"
             >
           </div>
 
-          <!-- Age -->
           <div>
-            <label class="block text-sm font-semibold text-slate-300 mb-2">Age</label>
+            <label class="block text-sm font-bold text-slate-300 mb-2">Age</label>
             <input 
               type="number" 
               id="age" 
               required
               min="18"
               max="100"
-              class="w-full px-4 py-3.5 bg-slate-700/50 border border-slate-600 text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-slate-500 transition"
+              class="w-full px-5 py-4 bg-slate-700/50 border-2 border-slate-600 text-white rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 placeholder-slate-500 transition font-medium"
               placeholder="18+"
             >
           </div>
 
-          <!-- Skill Level -->
           <div>
-            <label class="block text-sm font-semibold text-slate-300 mb-2">Skill Level</label>
+            <label class="block text-sm font-bold text-slate-300 mb-2">Skill Level</label>
             <select 
               id="skillLevel" 
               required
-              class="w-full px-4 py-3.5 bg-slate-700/50 border border-slate-600 text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition appearance-none cursor-pointer"
+              class="w-full px-5 py-4 bg-slate-700/50 border-2 border-slate-600 text-white rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition appearance-none cursor-pointer font-medium"
             >
               <option value="" class="bg-slate-800">Select your level...</option>
               <option value="beginner" class="bg-slate-800">🟢 Beginner - Still learning</option>
-              <option value="intermediate" class="bg-slate-800">🔵 Intermediate - Confident on blues</option>
-              <option value="advanced" class="bg-slate-800">⚫ Advanced - Love blacks & terrain parks</option>
-              <option value="expert" class="bg-slate-800">💎 Expert - Backcountry & double blacks</option>
+              <option value="intermediate" class="bg-slate-800">🔵 Intermediate - Crushing blues</option>
+              <option value="advanced" class="bg-slate-800">⚫ Advanced - Blacks & parks</option>
+              <option value="expert" class="bg-slate-800">💎 Expert - Backcountry beast</option>
             </select>
           </div>
 
-          <!-- Looking For -->
           <div>
-            <label class="block text-sm font-semibold text-slate-300 mb-2">Looking For</label>
+            <label class="block text-sm font-bold text-slate-300 mb-2">Looking For</label>
             <select 
               id="lookingFor" 
               required
-              class="w-full px-4 py-3.5 bg-slate-700/50 border border-slate-600 text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition appearance-none cursor-pointer"
+              class="w-full px-5 py-4 bg-slate-700/50 border-2 border-slate-600 text-white rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition appearance-none cursor-pointer font-medium"
             >
-              <option value="" class="bg-slate-800">What are you looking for?</option>
-              <option value="friends" class="bg-slate-800">🤝 Friends - Riding buddies</option>
-              <option value="dating" class="bg-slate-800">❤️ Dating - Romance on the slopes</option>
-              <option value="both" class="bg-slate-800">✨ Both - Open to anything</option>
+              <option value="" class="bg-slate-800">What's your vibe?</option>
+              <option value="friends" class="bg-slate-800">🤝 Friends - Riding crew</option>
+              <option value="dating" class="bg-slate-800">❤️ Dating - Romance on slopes</option>
+              <option value="both" class="bg-slate-800">✨ Both - Let's see what happens</option>
             </select>
           </div>
 
-          <!-- Bio -->
           <div>
-            <label class="block text-sm font-semibold text-slate-300 mb-2">About You (optional)</label>
+            <label class="block text-sm font-bold text-slate-300 mb-2">About You (optional)</label>
             <textarea 
               id="bio" 
               maxlength="200"
               rows="3"
-              class="w-full px-4 py-3.5 bg-slate-700/50 border border-slate-600 text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-slate-500 transition resize-none"
-              placeholder="Tell people a bit about yourself..."
+              class="w-full px-5 py-4 bg-slate-700/50 border-2 border-slate-600 text-white rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 placeholder-slate-500 transition resize-none font-medium"
+              placeholder="What makes you unique? Favorite run? Vibe?"
             ></textarea>
             <div class="flex justify-between items-center mt-2">
-              <p class="text-xs text-slate-500">This helps people connect with you</p>
+              <p class="text-xs text-slate-500 font-semibold">Make it memorable!</p>
               <p class="text-xs text-slate-400 font-mono" id="charCount">0 / 200</p>
             </div>
           </div>
 
-          <!-- Submit -->
           <button 
             type="submit"
-            class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 mt-6"
+            class="w-full bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 text-white py-5 rounded-xl font-black text-xl shadow-2xl hover:shadow-pink-500/25 transform hover:scale-[1.02] transition-all duration-300 mt-6"
           >
-            Continue →
+            Let's Go! 🔥
           </button>
         </form>
 
         <button 
           onclick="showView('landing')"
-          class="w-full text-slate-400 hover:text-white text-sm font-medium transition"
+          class="w-full text-slate-400 hover:text-white text-sm font-bold transition"
         >
-          ← Back to home
+          ← Back
         </button>
       </div>
     </div>
@@ -240,31 +283,34 @@
     <div id="browseView" class="hidden slide-up">
       <div class="space-y-6">
         <div class="text-center">
-          <h2 class="text-3xl font-bold text-white mb-2">On The Mountain Today</h2>
-          <p class="text-slate-400">32 riders at Mammoth right now</p>
+          <h2 class="text-4xl font-black text-white mb-2 gradient-text">On The Mountain</h2>
+          <p class="text-slate-400 text-lg font-semibold">32 riders at Mammoth right now 🏔️</p>
         </div>
 
         <!-- Profile Card Stack -->
-        <div id="cardStack" class="relative" style="height: 500px;">
+        <div id="cardStack" class="relative" style="height: 550px;">
           <!-- Cards will be inserted here by JS -->
         </div>
 
         <!-- Action Buttons -->
-        <div class="flex justify-center items-center gap-6">
-          <button onclick="passProfile()" class="w-16 h-16 bg-slate-800 hover:bg-slate-700 rounded-full flex items-center justify-center text-3xl shadow-lg hover:scale-110 transition-all">
+        <div class="flex justify-center items-center gap-8">
+          <button onclick="passProfile()" class="w-20 h-20 bg-slate-800 hover:bg-red-600 rounded-full flex items-center justify-center text-4xl shadow-2xl hover:scale-110 transition-all duration-200 border-2 border-slate-700 hover:border-red-500">
             ✕
           </button>
-          <button onclick="likeProfile()" class="w-20 h-20 bg-gradient-to-br from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 rounded-full flex items-center justify-center text-4xl shadow-xl hover:scale-110 transition-all">
+          <button onclick="likeProfile()" class="w-24 h-24 bg-gradient-to-br from-pink-500 via-purple-600 to-blue-600 hover:from-pink-600 hover:via-purple-700 hover:to-blue-700 rounded-full flex items-center justify-center text-5xl shadow-2xl hover:scale-110 transition-all duration-200 pulse-animation">
             ❤️
           </button>
         </div>
 
-        <button 
-          onclick="showView('landing')"
-          class="w-full text-slate-400 hover:text-white text-sm font-medium transition text-center"
-        >
-          ← Back to home
-        </button>
+        <div class="text-center">
+          <p class="text-slate-500 text-sm mb-4">Swipe or tap buttons</p>
+          <button 
+            onclick="showView('landing')"
+            class="text-slate-400 hover:text-white text-sm font-bold transition"
+          >
+            ← Back to home
+          </button>
+        </div>
       </div>
     </div>
   </main>
@@ -272,7 +318,6 @@
   <script src="src/animation.js"></script>
   <script src="src/app.js"></script>
   <script>
-    // Initialize animation when page loads
     window.addEventListener('load', initAnimation);
   </script>
 </body>
