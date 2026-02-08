@@ -331,6 +331,10 @@ function likeProfile() {
   const card = document.querySelector('.swipe-card');
   if (card) {
     totalLikes++;
+    
+    // Scroll to top of browse view before animating
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
     card.style.transform = 'translateX(500px) rotate(30deg)';
     card.style.transition = 'all 0.4s ease-out';
     card.style.opacity = '0';

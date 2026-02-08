@@ -312,13 +312,13 @@
 
     <!-- Browse View -->
     <div id="browseView" class="hidden slide-up">
-      <div class="space-y-6">
+      <div class="space-y-6 pb-12">
         <div class="text-center">
           <h2 class="text-4xl font-black text-white mb-2 gradient-text">On The Mountain</h2>
           <p class="text-slate-400 text-lg font-semibold">32 riders at Mammoth right now</p>
         </div>
 
-        <div id="cardStack" class="relative" style="min-height: 500px; max-height: 600px;"></div>
+        <div id="cardStack" class="relative mb-6" style="min-height: 500px; max-height: 600px;"></div>
 
         <div class="flex justify-center items-center gap-8">
           <button onclick="passProfile()" class="w-20 h-20 bg-slate-800 hover:bg-red-600 rounded-full flex items-center justify-center text-4xl shadow-2xl hover:scale-110 transition-all duration-200 border-2 border-slate-700 hover:border-red-500">
@@ -329,7 +329,7 @@
           </button>
         </div>
 
-        <div class="text-center">
+        <div class="text-center pb-8">
           <button 
             onclick="showView('matches')"
             id="matchesBtn"
