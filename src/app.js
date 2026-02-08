@@ -233,8 +233,8 @@ function renderProfileCard() {
       <div class="like-overlay" style="color: #10b981;">LIKE</div>
       <div class="pass-overlay" style="color: #ef4444;">PASS</div>
       
-      <div class="relative h-56 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 flex items-center justify-center">
-        <div class="text-[120px]">${profile.emoji}</div>
+      <div class="relative h-64 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 flex items-center justify-center">
+        <div class="text-[150px]">${profile.emoji}</div>
         <div class="absolute top-4 right-4">
           <span class="px-4 py-2 ${skillColors[profile.skill]} rounded-full text-sm font-black border-2 backdrop-blur-sm">
             ${profile.skill}
@@ -247,29 +247,29 @@ function renderProfileCard() {
         </div>
       </div>
       
-      <div class="p-5 space-y-3">
+      <div class="p-6 space-y-4">
         <div>
-          <h3 class="text-3xl font-black text-white mb-1">${profile.name}, ${profile.age}</h3>
-          <p class="text-slate-300 flex items-center gap-2 text-base font-semibold">
-            <span class="text-lg">${lookingForEmoji[profile.lookingFor]}</span>
+          <h3 class="text-4xl font-black text-white mb-1">${profile.name}, ${profile.age}</h3>
+          <p class="text-slate-300 flex items-center gap-2 text-lg font-semibold">
+            <span class="text-xl">${lookingForEmoji[profile.lookingFor]}</span>
             <span>${profile.lookingFor}</span>
           </p>
         </div>
         
-        <div class="bg-slate-700/40 rounded-2xl p-4 border border-slate-600/50">
-          <p class="text-slate-200 text-base leading-relaxed">${profile.bio}</p>
+        <div class="bg-slate-700/40 rounded-2xl p-5 border border-slate-600/50">
+          <p class="text-slate-200 text-lg leading-relaxed">${profile.bio}</p>
         </div>
         
-        <div class="grid grid-cols-2 gap-2">
-          <div class="bg-slate-700/30 rounded-xl p-3 text-center border border-slate-600/50">
-            <div class="text-xl mb-1">📍</div>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="bg-slate-700/30 rounded-xl p-4 text-center border border-slate-600/50">
+            <div class="text-2xl mb-1">📍</div>
             <div class="text-xs text-slate-400">Location</div>
-            <div class="text-white font-bold text-xs">Mammoth</div>
+            <div class="text-white font-bold text-sm">Mammoth</div>
           </div>
-          <div class="bg-slate-700/30 rounded-xl p-3 text-center border border-slate-600/50">
-            <div class="text-xl mb-1">⏰</div>
+          <div class="bg-slate-700/30 rounded-xl p-4 text-center border border-slate-600/50">
+            <div class="text-2xl mb-1">⏰</div>
             <div class="text-xs text-slate-400">Checked in</div>
-            <div class="text-white font-bold text-xs">20 min ago</div>
+            <div class="text-white font-bold text-sm">20 min ago</div>
           </div>
         </div>
       </div>
@@ -332,8 +332,11 @@ function likeProfile() {
   if (card) {
     totalLikes++;
     
-    // Scroll to top of browse view before animating
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Scroll to top before animating - works on mobile
+    const browseView = document.getElementById('browseView');
+    if (browseView) {
+      browseView.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
     
     card.style.transform = 'translateX(500px) rotate(30deg)';
     card.style.transition = 'all 0.4s ease-out';
@@ -359,6 +362,13 @@ function passProfile() {
   const card = document.querySelector('.swipe-card');
   if (card) {
     totalPasses++;
+    
+    // Scroll to top before animating
+    const browseView = document.getElementById('browseView');
+    if (browseView) {
+      browseView.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    
     card.style.transform = 'translateX(-500px) rotate(-30deg)';
     card.style.transition = 'all 0.4s ease-out';
     card.style.opacity = '0';
