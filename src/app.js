@@ -9,10 +9,37 @@ const views = {
   profile: document.getElementById('profileView'),
 }
 
-// State
-window.matchedProfiles = [];
+// State - Start with some matches for demo purposes!
+window.matchedProfiles = [
+  {
+    name: "Alex",
+    age: 26,
+    skill: "Advanced",
+    lookingFor: "Both",
+    bio: "Early bird catches the powder 🌅 Love hitting blacks when it's fresh!",
+    emoji: "🏂"
+  },
+  {
+    name: "Jordan",
+    age: 29,
+    skill: "Expert",
+    lookingFor: "Dating",
+    bio: "Backcountry enthusiast. If you can keep up, let's shred! 💪",
+    emoji: "🏂"
+  },
+  {
+    name: "Riley",
+    age: 27,
+    skill: "Intermediate",
+    lookingFor: "Both",
+    bio: "Park rat by day, apres by night 🎿🍻 Living the dream!",
+    emoji: "⛷️"
+  }
+];
 let currentProfileIndex = 0;
 let isCheckedIn = false;
+let totalLikes = 0;
+let totalPasses = 0;
 
 // Enhanced profiles
 const sampleProfiles = [
@@ -87,6 +114,13 @@ function updateMatchCount() {
   if (btn) {
     btn.textContent = `View Matches (${matchedProfiles.length}) →`;
   }
+  const badge = document.getElementById('matchBadge');
+  if (badge) {
+    badge.textContent = matchedProfiles.length;
+    // Pulse animation when count changes
+    badge.classList.add('pulse-animation');
+    setTimeout(() => badge.classList.remove('pulse-animation'), 2000);
+  }
 }
 
 function showView(viewName) {
@@ -133,18 +167,43 @@ function renderProfileCard() {
   cardStack.innerHTML = '';
   
   if (currentProfileIndex >= sampleProfiles.length) {
+    const matchRate = totalLikes > 0 ? Math.round((matchedProfiles.length / totalLikes) * 100) : 0;
     cardStack.innerHTML = `
       <div class="absolute inset-0 flex items-center justify-center">
-        <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-12 shadow-2xl border border-slate-700/50 text-center space-y-6">
+        <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-10 shadow-2xl border border-slate-700/50 text-center space-y-6">
           <div class="text-8xl mb-4">🎿</div>
           <h3 class="text-3xl font-black text-white mb-2 gradient-text">All Caught Up!</h3>
           <p class="text-slate-400 text-lg mb-6">That's everyone on the mountain right now</p>
-          <div class="bg-slate-700/30 rounded-2xl p-6 mb-6">
-            <div class="text-5xl mb-2">${matchedProfiles.length}</div>
-            <div class="text-slate-400 font-semibold">Total Matches 💕</div>
+          
+          <div class="grid grid-cols-2 gap-4 mb-6">
+            <div class="bg-slate-700/30 rounded-2xl p-5 border border-slate-600/50">
+              <div class="text-4xl mb-2">💕</div>
+              <div class="text-3xl font-black text-white mb-1">${matchedProfiles.length}</div>
+              <div class="text-slate-400 text-sm font-semibold">Matches</div>
+            </div>
+            <div class="bg-slate-700/30 rounded-2xl p-5 border border-slate-600/50">
+              <div class="text-4xl mb-2">🔥</div>
+              <div class="text-3xl font-black text-white mb-1">${matchRate}%</div>
+              <div class="text-slate-400 text-sm font-semibold">Match Rate</div>
+            </div>
           </div>
-          <button onclick="showView('matches')" class="px-8 py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white rounded-xl font-bold text-lg hover:scale-105 transition shadow-xl">
-            View Matches →
+          
+          <div class="flex gap-3 text-sm text-slate-500">
+            <div class="flex-1 bg-slate-700/20 rounded-xl p-3">
+              <div class="text-lg font-bold text-white">${totalLikes}</div>
+              <div>Likes Given</div>
+            </div>
+            <div class="flex-1 bg-slate-700/20 rounded-xl p-3">
+              <div class="text-lg font-bold text-white">${totalPasses}</div>
+              <div>Passed</div>
+            </div>
+          </div>
+          
+          <button onclick="showView('matches')" class="w-full px-8 py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white rounded-xl font-bold text-lg hover:scale-105 transition shadow-xl mb-2">
+            View All Matches →
+          </button>
+          <button onclick="currentProfileIndex = 0; totalLikes = 0; totalPasses = 0; renderProfileCard();" class="w-full px-6 py-3 text-slate-400 hover:text-white font-semibold transition">
+            🔄 Browse Again
           </button>
         </div>
       </div>
@@ -271,12 +330,13 @@ function renderProfileCard() {
 function likeProfile() {
   const card = document.querySelector('.swipe-card');
   if (card) {
+    totalLikes++;
     card.style.transform = 'translateX(500px) rotate(30deg)';
     card.style.transition = 'all 0.4s ease-out';
     card.style.opacity = '0';
     
-    // 50% chance of match
-    if (Math.random() < 0.5) {
+    // 70% chance of match (for fun demo!)
+    if (Math.random() < 0.7) {
       matchedProfiles.push(sampleProfiles[currentProfileIndex]);
       updateMatchCount();
       setTimeout(() => {
@@ -294,6 +354,7 @@ function likeProfile() {
 function passProfile() {
   const card = document.querySelector('.swipe-card');
   if (card) {
+    totalPasses++;
     card.style.transform = 'translateX(-500px) rotate(-30deg)';
     card.style.transition = 'all 0.4s ease-out';
     card.style.opacity = '0';
@@ -362,8 +423,38 @@ function openChat(profileIndex) {
   const profile = matchedProfiles[profileIndex];
   document.getElementById('chatName').textContent = profile.name;
   
+  // Different conversations for variety
+  const conversations = [
+    {
+      starter: `Hey ${profile.name}! Want to hit some runs together? ⛷️`,
+      responses: [
+        { from: 'them', text: `Absolutely! I'm heading to Chair 3 in 20 min. Meet at the base? 🏂` },
+        { from: 'me', text: `Perfect! See you there 🙌` }
+      ]
+    },
+    {
+      starter: `Your bio caught my eye! ${profile.bio.split('.')[0]} 😄`,
+      responses: [
+        { from: 'them', text: `Haha thanks! You look like you can keep up. Down for some blacks? ⚫` },
+        { from: 'me', text: `Let's do it! I'll be at the gondola in 10 🚠` },
+        { from: 'them', text: `See you there! This is gonna be epic 🔥` }
+      ]
+    },
+    {
+      starter: `Just got to Mammoth! Where are the best runs today? 🏔️`,
+      responses: [
+        { from: 'them', text: `Chair 22 has fresh powder! Want to carve some together? 🏂` },
+        { from: 'me', text: `Yes! When are you heading up?` },
+        { from: 'them', text: `20 minutes! Grab coffee first? ☕` },
+        { from: 'me', text: `Perfect, I'm at the village now 👍` }
+      ]
+    }
+  ];
+  
+  const convo = conversations[profileIndex % conversations.length];
+  
   const chatMessages = document.getElementById('chatMessages');
-  chatMessages.innerHTML = `
+  let messagesHTML = `
     <div class="text-center text-slate-500 text-sm mb-6">
       <div class="text-4xl mb-2">💕</div>
       <p>You matched with ${profile.name}!</p>
@@ -371,20 +462,32 @@ function openChat(profileIndex) {
     </div>
     <div class="flex justify-end">
       <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl px-5 py-3 max-w-[80%]">
-        <p>Hey ${profile.name}! Want to hit some runs together? ⛷️</p>
-      </div>
-    </div>
-    <div class="flex justify-start">
-      <div class="bg-slate-700 text-white rounded-2xl px-5 py-3 max-w-[80%]">
-        <p>Absolutely! I'm heading to Chair 3 in 20 min. Meet at the base? 🏂</p>
-      </div>
-    </div>
-    <div class="flex justify-end">
-      <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl px-5 py-3 max-w-[80%]">
-        <p>Perfect! See you there 🙌</p>
+        <p>${convo.starter}</p>
       </div>
     </div>
   `;
+  
+  convo.responses.forEach(msg => {
+    if (msg.from === 'them') {
+      messagesHTML += `
+        <div class="flex justify-start">
+          <div class="bg-slate-700 text-white rounded-2xl px-5 py-3 max-w-[80%]">
+            <p>${msg.text}</p>
+          </div>
+        </div>
+      `;
+    } else {
+      messagesHTML += `
+        <div class="flex justify-end">
+          <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl px-5 py-3 max-w-[80%]">
+            <p>${msg.text}</p>
+          </div>
+        </div>
+      `;
+    }
+  });
+  
+  chatMessages.innerHTML = messagesHTML;
   
   showView('chat');
 }

@@ -96,8 +96,9 @@
         <span class="gradient-text">Slope Singles</span>
       </h1>
       <div id="navButtons" class="hidden flex items-center gap-3">
-        <button onclick="showView('matches')" class="text-slate-400 hover:text-white transition">
+        <button onclick="showView('matches')" class="text-slate-400 hover:text-white transition relative">
           <div class="text-2xl">💕</div>
+          <span id="matchBadge" class="absolute -top-1 -right-1 bg-pink-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">3</span>
         </button>
         <button onclick="showView('profile')" class="text-slate-400 hover:text-white transition">
           <div class="text-2xl">👤</div>
@@ -334,7 +335,7 @@
             id="matchesBtn"
             class="text-blue-400 hover:text-blue-300 font-semibold"
           >
-            View Matches (0) →
+            View Matches (3) →
           </button>
         </div>
       </div>
