@@ -82,6 +82,13 @@ const sampleProfiles = [
   }
 ];
 
+function updateMatchCount() {
+  const btn = document.getElementById('matchesBtn');
+  if (btn) {
+    btn.textContent = `View Matches (${matchedProfiles.length}) →`;
+  }
+}
+
 function showView(viewName) {
   // Hide all views
   Object.values(views).forEach(view => view?.classList.add('hidden'))
@@ -94,6 +101,7 @@ function showView(viewName) {
     if (viewName === 'browse') {
       currentProfileIndex = 0;
       document.getElementById('navButtons').classList.remove('hidden');
+      updateMatchCount();
       renderProfileCard();
     } else if (viewName === 'matches') {
       document.getElementById('navButtons').classList.remove('hidden');
@@ -270,6 +278,7 @@ function likeProfile() {
     // 50% chance of match
     if (Math.random() < 0.5) {
       matchedProfiles.push(sampleProfiles[currentProfileIndex]);
+      updateMatchCount();
       setTimeout(() => {
         showMatchAnimation();
       }, 400);
