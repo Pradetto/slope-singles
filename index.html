@@ -95,15 +95,13 @@
         <span class="text-2xl float">🏂</span>
         <span class="gradient-text">Slope Singles</span>
       </h1>
-      <div id="statsBar" class="hidden flex items-center gap-4">
-        <div class="text-center">
-          <div class="text-xs text-slate-400">Matches</div>
-          <div id="matchCount" class="text-white font-bold">0</div>
-        </div>
-        <div class="text-center">
-          <div class="text-xs text-slate-400">Streak</div>
-          <div id="streakCount" class="text-white font-bold">0🔥</div>
-        </div>
+      <div id="navButtons" class="hidden flex items-center gap-3">
+        <button onclick="showView('matches')" class="text-slate-400 hover:text-white transition">
+          <div class="text-2xl">💕</div>
+        </button>
+        <button onclick="showView('profile')" class="text-slate-400 hover:text-white transition">
+          <div class="text-2xl">👤</div>
+        </button>
       </div>
     </div>
   </header>
@@ -112,7 +110,7 @@
   <main class="max-w-md mx-auto px-6 py-12">
     <!-- Landing View -->
     <div id="landingView" class="space-y-10 slide-up">
-      <!-- Animated Hero Section -->
+      <!-- Animated Hero -->
       <div class="relative bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl overflow-hidden border border-slate-700/30 shadow-2xl" style="height: 320px;">
         <canvas id="heroCanvas"></canvas>
         <div class="relative z-10 text-center p-8 flex flex-col justify-center h-full">
@@ -126,7 +124,7 @@
         </div>
       </div>
 
-      <!-- Feature Cards -->
+      <!-- Features -->
       <div class="bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-slate-700/30 space-y-6">
         <div class="space-y-5">
           <div class="flex items-start gap-4 p-4 bg-slate-700/20 rounded-2xl hover:bg-slate-700/30 transition-all duration-300 group cursor-pointer">
@@ -154,7 +152,6 @@
           </div>
         </div>
 
-        <!-- CTA Button -->
         <div class="pt-4">
           <button 
             onclick="showView('signup')"
@@ -175,11 +172,10 @@
         </div>
       </div>
 
-      <!-- Footer -->
       <div class="text-center space-y-2">
         <p class="text-xs text-slate-500">MVP • Built for real riders</p>
-        <button onclick="showView('browse')" class="text-sm text-blue-400 hover:text-blue-300 font-semibold">
-          Preview Browse →
+        <button onclick="showView('checkin')" class="text-sm text-blue-400 hover:text-blue-300 font-semibold">
+          Preview Full Flow →
         </button>
       </div>
     </div>
@@ -226,10 +222,10 @@
               class="w-full px-5 py-4 bg-slate-700/50 border-2 border-slate-600 text-white rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition appearance-none cursor-pointer font-medium"
             >
               <option value="" class="bg-slate-800">Select your level...</option>
-              <option value="beginner" class="bg-slate-800">🟢 Beginner - Still learning</option>
-              <option value="intermediate" class="bg-slate-800">🔵 Intermediate - Crushing blues</option>
-              <option value="advanced" class="bg-slate-800">⚫ Advanced - Blacks & parks</option>
-              <option value="expert" class="bg-slate-800">💎 Expert - Backcountry beast</option>
+              <option value="beginner" class="bg-slate-800">🟢 Beginner</option>
+              <option value="intermediate" class="bg-slate-800">🔵 Intermediate</option>
+              <option value="advanced" class="bg-slate-800">⚫ Advanced</option>
+              <option value="expert" class="bg-slate-800">💎 Expert</option>
             </select>
           </div>
 
@@ -241,9 +237,9 @@
               class="w-full px-5 py-4 bg-slate-700/50 border-2 border-slate-600 text-white rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition appearance-none cursor-pointer font-medium"
             >
               <option value="" class="bg-slate-800">What's your vibe?</option>
-              <option value="friends" class="bg-slate-800">🤝 Friends - Riding crew</option>
-              <option value="dating" class="bg-slate-800">❤️ Dating - Romance on slopes</option>
-              <option value="both" class="bg-slate-800">✨ Both - Let's see what happens</option>
+              <option value="friends" class="bg-slate-800">🤝 Friends</option>
+              <option value="dating" class="bg-slate-800">❤️ Dating</option>
+              <option value="both" class="bg-slate-800">✨ Both</option>
             </select>
           </div>
 
@@ -254,19 +250,18 @@
               maxlength="200"
               rows="3"
               class="w-full px-5 py-4 bg-slate-700/50 border-2 border-slate-600 text-white rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 placeholder-slate-500 transition resize-none font-medium"
-              placeholder="What makes you unique? Favorite run? Vibe?"
+              placeholder="What makes you unique?"
             ></textarea>
-            <div class="flex justify-between items-center mt-2">
-              <p class="text-xs text-slate-500 font-semibold">Make it memorable!</p>
+            <div class="flex justify-end mt-2">
               <p class="text-xs text-slate-400 font-mono" id="charCount">0 / 200</p>
             </div>
           </div>
 
           <button 
             type="submit"
-            class="w-full bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 text-white py-5 rounded-xl font-black text-xl shadow-2xl hover:shadow-pink-500/25 transform hover:scale-[1.02] transition-all duration-300 mt-6"
+            class="w-full bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 text-white py-5 rounded-xl font-black text-xl shadow-2xl transform hover:scale-[1.02] transition-all duration-300 mt-6"
           >
-            Let's Go! 🔥
+            Continue →
           </button>
         </form>
 
@@ -279,20 +274,51 @@
       </div>
     </div>
 
+    <!-- Check-in View -->
+    <div id="checkinView" class="hidden slide-up">
+      <div class="space-y-6">
+        <div class="text-center">
+          <h2 class="text-4xl font-black text-white mb-2 gradient-text">Ready to Shred?</h2>
+          <p class="text-slate-400 text-lg">Let others know you're on the mountain</p>
+        </div>
+
+        <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-10 shadow-2xl border border-slate-700/50 text-center space-y-6">
+          <div class="text-8xl">🏔️</div>
+          <div>
+            <h3 class="text-2xl font-black text-white mb-2">Check In at Mammoth</h3>
+            <p class="text-slate-400">You'll appear to other riders on the mountain</p>
+          </div>
+          
+          <button 
+            onclick="checkIn()"
+            id="checkinBtn"
+            class="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-5 rounded-2xl font-black text-xl shadow-2xl transform hover:scale-[1.02] transition-all duration-300"
+          >
+            I'm Here Now! ✓
+          </button>
+          
+          <p class="text-xs text-slate-500">Your check-in expires at midnight or when you leave</p>
+        </div>
+
+        <button 
+          onclick="showView('signup')"
+          class="w-full text-slate-400 hover:text-white text-sm font-bold transition text-center"
+        >
+          ← Back
+        </button>
+      </div>
+    </div>
+
     <!-- Browse View -->
     <div id="browseView" class="hidden slide-up">
       <div class="space-y-6">
         <div class="text-center">
           <h2 class="text-4xl font-black text-white mb-2 gradient-text">On The Mountain</h2>
-          <p class="text-slate-400 text-lg font-semibold">32 riders at Mammoth right now 🏔️</p>
+          <p class="text-slate-400 text-lg font-semibold">32 riders at Mammoth right now</p>
         </div>
 
-        <!-- Profile Card Stack -->
-        <div id="cardStack" class="relative" style="height: 550px;">
-          <!-- Cards will be inserted here by JS -->
-        </div>
+        <div id="cardStack" class="relative" style="height: 550px;"></div>
 
-        <!-- Action Buttons -->
         <div class="flex justify-center items-center gap-8">
           <button onclick="passProfile()" class="w-20 h-20 bg-slate-800 hover:bg-red-600 rounded-full flex items-center justify-center text-4xl shadow-2xl hover:scale-110 transition-all duration-200 border-2 border-slate-700 hover:border-red-500">
             ✕
@@ -303,14 +329,98 @@
         </div>
 
         <div class="text-center">
-          <p class="text-slate-500 text-sm mb-4">Swipe or tap buttons</p>
           <button 
-            onclick="showView('landing')"
-            class="text-slate-400 hover:text-white text-sm font-bold transition"
+            onclick="showView('matches')"
+            class="text-blue-400 hover:text-blue-300 font-semibold"
           >
-            ← Back to home
+            View Matches (${window.matchedProfiles ? window.matchedProfiles.length : 0}) →
           </button>
         </div>
+      </div>
+    </div>
+
+    <!-- Matches View -->
+    <div id="matchesView" class="hidden slide-up">
+      <div class="space-y-6">
+        <div class="text-center">
+          <h2 class="text-4xl font-black text-white mb-2 gradient-text">Your Matches</h2>
+          <p class="text-slate-400 text-lg">Start a conversation!</p>
+        </div>
+
+        <div id="matchesList" class="space-y-4">
+          <!-- Matches will be inserted here -->
+        </div>
+
+        <button 
+          onclick="showView('browse')"
+          class="w-full text-slate-400 hover:text-white text-sm font-bold transition text-center"
+        >
+          ← Back to browsing
+        </button>
+      </div>
+    </div>
+
+    <!-- Chat View -->
+    <div id="chatView" class="hidden slide-up">
+      <div class="space-y-6">
+        <div class="flex items-center gap-4">
+          <button onclick="showView('matches')" class="text-slate-400 hover:text-white">
+            <div class="text-2xl">←</div>
+          </button>
+          <div class="flex-1">
+            <h2 id="chatName" class="text-2xl font-black text-white"></h2>
+            <p class="text-slate-400 text-sm">Active now</p>
+          </div>
+        </div>
+
+        <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-6 shadow-2xl border border-slate-700/50" style="height: 400px; overflow-y: auto;">
+          <div id="chatMessages" class="space-y-4">
+            <!-- Messages will be inserted here -->
+          </div>
+        </div>
+
+        <div class="flex gap-3">
+          <input 
+            type="text" 
+            id="messageInput"
+            placeholder="Send a message..."
+            class="flex-1 px-5 py-4 bg-slate-800 border-2 border-slate-700 text-white rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 placeholder-slate-500 transition font-medium"
+          >
+          <button onclick="sendMessage()" class="px-6 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold hover:scale-105 transition">
+            Send
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile View -->
+    <div id="profileView" class="hidden slide-up">
+      <div class="space-y-6">
+        <div class="text-center">
+          <h2 class="text-4xl font-black text-white mb-2 gradient-text">Your Profile</h2>
+        </div>
+
+        <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-8 shadow-2xl border border-slate-700/50 text-center space-y-6">
+          <div class="text-8xl">🏂</div>
+          <div>
+            <h3 class="text-3xl font-black text-white mb-2">Michael, 29</h3>
+            <p class="text-slate-400">Advanced • Looking for Both</p>
+          </div>
+          <div class="bg-slate-700/30 rounded-2xl p-5 text-slate-300 text-lg">
+            "Love early morning powder runs ❄️"
+          </div>
+          <div class="flex justify-center gap-3">
+            <span class="px-4 py-2 bg-slate-700/30 text-slate-300 rounded-full text-sm font-semibold">☕ Coffee lover</span>
+            <span class="px-4 py-2 bg-slate-700/30 text-slate-300 rounded-full text-sm font-semibold">🌄 Early bird</span>
+          </div>
+        </div>
+
+        <button 
+          onclick="showView('browse')"
+          class="w-full text-slate-400 hover:text-white text-sm font-bold transition text-center"
+        >
+          ← Back
+        </button>
       </div>
     </div>
   </main>
